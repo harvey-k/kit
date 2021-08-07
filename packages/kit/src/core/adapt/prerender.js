@@ -91,6 +91,11 @@ const REDIRECT = 3;
  *   all: boolean; // disregard `export const prerender = true`
  * }} opts */
 export async function prerender({ cwd, out, log, config, build_data, fallback, all }) {
+	// no-op when prerender disabled, however fallback routes must be prerendered 
+	if (!config.kit.prerender.enabled && !fallback) {
+		return;
+	}
+
 	__fetch_polyfill();
 
 	const dir = resolve_path(cwd, `${SVELTE_KIT}/output`);
